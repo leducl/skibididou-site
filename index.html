@@ -8,12 +8,27 @@
 </head>
 <body>
   <div class="container">
-    <h1>Compteur de 3h30</h1>
-    <div id="timer">03:30:00</div>
-    <button id="startButton">Démarrer</button>
+    <h1>Compteur Personnalisable</h1>
+
+    <div id="config">
+      <label>
+        Durée totale (en minutes) :
+        <input type="number" id="durationInput" value="210" min="1">
+      </label>
+      <br>
+      <label>
+        Intervalle par carré (en secondes) :
+        <input type="number" id="intervalInput" value="60" min="1">
+      </label>
+      <br>
+      <button id="startButton">Démarrer</button>
+    </div>
+
+    <div id="timer">--:--:--</div>
     <div id="grid"></div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>

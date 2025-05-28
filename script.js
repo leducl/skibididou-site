@@ -1,19 +1,14 @@
 const grid = document.getElementById("grid");
 const startButton = document.getElementById("startButton");
 const timerDisplay = document.getElementById("timer");
-const totalSeconds = 210 * 60; // 3h30 = 210 minutes
-let elapsedSeconds = 0;
-let secondInterval;
-let minuteTrigger = 0;
+const durationInput = document.getElementById("durationInput");
+const intervalInput = document.getElementById("intervalInput");
 
 const eventScripts = ["events/event1.js", "events/event2.js", "events/event3.js"];
 
-// Générer les cases
-for (let i = 0; i < 210; i++) {
-  const square = document.createElement("div");
-  square.classList.add("square");
-  grid.appendChild(square);
-}
+let totalSeconds, intervalSeconds, numSquares;
+let elapsedSeconds = 0;
+let secondInterval;
 
 function triggerRandomEvent() {
   const script = document.createElement("script");
@@ -29,34 +24,50 @@ function updateTimerDisplay() {
   timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
-function fillNextSquareAndTriggerEvent() {
-  const minuteIndex = Math.floor(elapsedSeconds / 60);
-  if (minuteIndex < 210) {
-    const squares = document.querySelectorAll(".square");
-    squares[minuteIndex].classList.add("filled");
-    triggerRandomEvent();
+function generateSquares() {
+  grid.innerHTML = "";
+  for (let i = 0; i < numSquares; i++) {
+    const square = document.createElement("div");
+    square.classList.add("square");
+    grid.appendChild(square);
   }
 }
 
 function startTimer() {
+  const durationMinutes = parseInt(durationInput.value);
+  intervalSeconds = parseInt(intervalInput.value);
+  totalSeconds = durationMinutes * 60;
+  numSquares = Math.ceil(totalSeconds / intervalSeconds);
+
   startButton.style.display = "none";
+  durationInput.disabled = true;
+  intervalInput.disabled = true;
+
+  generateSquares();
+  // Met à jour dynamiquement la durée d'animation en CSS
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .square.filling::before {
+      animation: fillUp ${intervalSeconds}s linear forwards;
+    }
+  `;
+  document.head.appendChild(style);
+
   updateTimerDisplay();
 
   secondInterval = setInterval(() => {
-    const minuteIndex = Math.floor(elapsedSeconds / 60);
-
-    if (elapsedSeconds % 60 === 0 && minuteIndex < 210) {
+    if (elapsedSeconds % intervalSeconds === 0) {
+      const index = Math.floor(elapsedSeconds / intervalSeconds);
       const squares = document.querySelectorAll(".square");
+      if (index < squares.length) {
+        squares[index].classList.add("filling");
 
-      // Début du remplissage progressif
-      squares[minuteIndex].classList.add("filling");
-
-      // Fin de la minute : activer l'effet de fin et l'événement
-      setTimeout(() => {
-        squares[minuteIndex].classList.remove("filling");
-        squares[minuteIndex].classList.add("filled");
-        triggerRandomEvent();
-      }, 60 * 1000); // À la fin de la minute
+        setTimeout(() => {
+          squares[index].classList.remove("filling");
+          squares[index].classList.add("filled");
+          triggerRandomEvent();
+        }, intervalSeconds * 1000);
+      }
     }
 
     updateTimerDisplay();
@@ -67,6 +78,5 @@ function startTimer() {
     }
   }, 1000);
 }
-
 
 startButton.addEventListener("click", startTimer);
