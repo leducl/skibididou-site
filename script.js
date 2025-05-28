@@ -4,6 +4,7 @@ const timerDisplay = document.getElementById("timer");
 const durationInput = document.getElementById("durationInput");
 const intervalInput = document.getElementById("intervalInput");
 let loadedEventScripts = [];
+const squareCount = document.getElementById("squareCount");
 
 const eventScripts = ["events/event1.js",
    "events/event2.js", 
@@ -60,6 +61,27 @@ function generateSquares() {
   }
 }
 
+function updateSquareCount() {
+  const duration = parseInt(durationInput.value);
+  const interval = parseInt(intervalInput.value);
+
+  if (isNaN(duration) || isNaN(interval) || interval <= 0 || duration <= 0) {
+    squareCount.textContent = "Entrée invalide";
+    startButton.disabled = true;
+    return;
+  }
+
+  const count = Math.ceil((duration * 60) / interval);
+  squareCount.textContent = `Carrés générés : ${count}`;
+
+  if (count > 1000) {
+    squareCount.textContent += " ⚠️ (Limite dépassée)";
+    startButton.disabled = true;
+  } else {
+    startButton.disabled = false;
+  }
+}
+
 function startTimer() {
   const durationMinutes = parseInt(durationInput.value);
   intervalSeconds = parseInt(intervalInput.value);
@@ -71,7 +93,9 @@ function startTimer() {
   intervalInput.disabled = true;
 
   generateSquares();
-  // Met à jour dynamiquement la durée d'animation en CSS
+  updateTimerDisplay();
+
+  // Crée une animation CSS dynamique pour le remplissage
   const style = document.createElement('style');
   style.innerHTML = `
     .square.filling::before {
@@ -79,8 +103,6 @@ function startTimer() {
     }
   `;
   document.head.appendChild(style);
-
-  updateTimerDisplay();
 
   secondInterval = setInterval(() => {
     if (elapsedSeconds % intervalSeconds === 0) {
@@ -115,4 +137,8 @@ function startTimer() {
   }, 1000);
 }
 
+// Événements
 startButton.addEventListener("click", startTimer);
+durationInput.addEventListener("input", updateSquareCount);
+intervalInput.addEventListener("input", updateSquareCount);
+updateSquareCount(); // Initialisation
