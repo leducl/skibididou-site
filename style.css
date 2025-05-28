@@ -109,3 +109,15 @@ h1 {
   50%  { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
+#gridContainer {
+  max-height: 400px;
+  margin-top: 30px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  max-width: 400px;
+  margin-inline: auto;
+  overflow-y: scroll; /* au lieu de auto */
+}

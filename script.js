@@ -3,18 +3,45 @@ const startButton = document.getElementById("startButton");
 const timerDisplay = document.getElementById("timer");
 const durationInput = document.getElementById("durationInput");
 const intervalInput = document.getElementById("intervalInput");
+let loadedEventScripts = [];
 
-const eventScripts = ["events/event1.js", "events/event2.js", "events/event3.js"];
+const eventScripts = ["events/event1.js",
+   "events/event2.js", 
+   "events/event3.js",
+   "events/bootstrapTheme.js"];
 
 let totalSeconds, intervalSeconds, numSquares;
 let elapsedSeconds = 0;
 let secondInterval;
+function clearEventsState() {
+  // Supprime modals éventuels
+  const modals = document.querySelectorAll('.custom-event-modal');
+  modals.forEach(modal => modal.remove());
+
+  // Supprime scripts ajoutés
+  loadedEventScripts.forEach(scriptEl => {
+    if(scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+  });
+  loadedEventScripts = [];
+}
 
 function triggerRandomEvent() {
+  clearEventsState();
+
+  const eventFile = eventScripts[Math.floor(Math.random() * eventScripts.length)];
+  const eventInfo = document.getElementById("eventInfo");
+  if(eventInfo) eventInfo.textContent = `Événement déclenché : ${eventFile}`;
+
   const script = document.createElement("script");
-  script.src = eventScripts[Math.floor(Math.random() * eventScripts.length)];
+  // Ajoute un timestamp pour forcer le reload
+  script.src = eventFile + '?_=' + new Date().getTime();
+  script.async = true;
+
   document.body.appendChild(script);
+  loadedEventScripts.push(script);
 }
+
+
 
 function updateTimerDisplay() {
   const remaining = totalSeconds - elapsedSeconds;
@@ -61,12 +88,21 @@ function startTimer() {
       const squares = document.querySelectorAll(".square");
       if (index < squares.length) {
         squares[index].classList.add("filling");
+        // Scroll vers le carré en cours
+        squares[index].scrollIntoView({ behavior: "smooth", block: "center" });
+
 
         setTimeout(() => {
           squares[index].classList.remove("filling");
           squares[index].classList.add("filled");
+        
+          if (typeof window.closeCustomEventModal === "function") {
+            window.closeCustomEventModal(); // Ferme le modal si un event l’a créé
+          }
+        
           triggerRandomEvent();
         }, intervalSeconds * 1000);
+        
       }
     }
 
