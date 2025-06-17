@@ -10,6 +10,11 @@ const eventScripts = [
   "events/event2.js",
   "events/event3.js",
   "events/event4.js",
+  "events/event5.js",
+  "events/event6.js",
+  "events/event7.js",
+  "events/event8.js",
+  "events/event9.js",
   "events/bootstrapTheme.js",
   "events/duckhunt.js"
 
