@@ -6,15 +6,21 @@ const intervalInput = document.getElementById("intervalInput");
 let loadedEventScripts = [];
 const squareCount = document.getElementById("squareCount");
 
-const eventScripts = ["events/event1.js",
-   "events/event2.js", 
-   "events/event3.js",
-   "events/bootstrapTheme.js"];
+const eventScripts = [
+  "events/event1.js",
+  "events/event2.js",
+  "events/event3.js",
+  "events/event4.js",
+  "events/bootstrapTheme.js"
+];
 
 let totalSeconds, intervalSeconds, numSquares;
 let elapsedSeconds = 0;
 let secondInterval;
 function clearEventsState() {
+  if (typeof window.closeCustomEventModal === 'function') {
+    try { window.closeCustomEventModal(); } catch (e) { console.error(e); }
+  }
   // Supprime modals éventuels
   const modals = document.querySelectorAll('.custom-event-modal');
   modals.forEach(modal => modal.remove());

@@ -29,6 +29,5 @@
     delete window.closeCustomEventModal;
   }
 
-  setTimeout(cleanup, 5000);
   window.closeCustomEventModal = cleanup;
 })();
