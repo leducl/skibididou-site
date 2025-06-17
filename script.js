@@ -49,7 +49,12 @@ function triggerRandomEvent() {
 
   const eventFile = eventScripts[Math.floor(Math.random() * eventScripts.length)];
   const eventInfo = document.getElementById("eventInfo");
-  if(eventInfo) eventInfo.textContent = `Événement déclenché : ${eventFile}`;
+  if(eventInfo) {
+    const eventName = eventFile.split("/").pop().replace(/\.js$/, "");
+    eventInfo.textContent = `Événement : ${eventName}`;
+    eventInfo.classList.add("show");
+    setTimeout(() => eventInfo.classList.remove("show"), 4000);
+  }
 
   const script = document.createElement("script");
   // Ajoute un timestamp pour forcer le reload
@@ -77,6 +82,8 @@ function generateSquares() {
     square.classList.add("square");
     grid.appendChild(square);
   }
+  const sc = document.getElementById('squareCount');
+  if (sc) sc.textContent = `Carrés générés : ${numSquares}`;
 }
 
 function startTimer() {
