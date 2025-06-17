@@ -39,5 +39,4 @@
 
   overlay.addEventListener('click', cleanup);
   window.closeCustomEventModal = cleanup;
-  setTimeout(cleanup, 5000);
 })();

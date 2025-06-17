@@ -18,6 +18,9 @@ let totalSeconds, intervalSeconds, numSquares;
 let elapsedSeconds = 0;
 let secondInterval;
 function clearEventsState() {
+  if (typeof window.closeCustomEventModal === 'function') {
+    try { window.closeCustomEventModal(); } catch (e) { console.error(e); }
+  }
   // Supprime modals éventuels
   const modals = document.querySelectorAll('.custom-event-modal');
   modals.forEach(modal => modal.remove());
