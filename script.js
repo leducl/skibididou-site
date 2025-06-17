@@ -6,10 +6,13 @@ const intervalInput = document.getElementById("intervalInput");
 let loadedEventScripts = [];
 const squareCount = document.getElementById("squareCount");
 
-const eventScripts = ["events/event1.js",
-   "events/event2.js", 
-   "events/event3.js",
-   "events/bootstrapTheme.js"];
+const eventScripts = [
+  "events/event1.js",
+  "events/event2.js",
+  "events/event3.js",
+  "events/event4.js",
+  "events/bootstrapTheme.js"
+];
 
 let totalSeconds, intervalSeconds, numSquares;
 let elapsedSeconds = 0;
