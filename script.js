@@ -10,7 +10,8 @@ const eventScripts = [
   "events/event2.js",
   "events/event3.js",
   "events/event4.js",
-  "events/bootstrapTheme.js"
+  "events/bootstrapTheme.js",
+  "events/duckhunt.js"
 ];
 
 let totalSeconds, intervalSeconds, numSquares;
