@@ -18,17 +18,24 @@
 
   const colorInterval = setInterval(() => {
     squares.forEach(sq => {
-      sq.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+      sq.style.backgroundColor =
+        '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     });
   }, 200);
 
+  const duration =
+    typeof intervalSeconds === 'number' && !isNaN(intervalSeconds)
+      ? intervalSeconds * 1000
+      : 5000;
+  const timer = setTimeout(cleanup, duration);
+
   function cleanup() {
     clearInterval(colorInterval);
+    clearTimeout(timer);
     squares.forEach(sq => (sq.style.backgroundColor = ''));
     overlay.remove();
     delete window.closeCustomEventModal;
   }
 
-  setTimeout(cleanup, 5000);
   window.closeCustomEventModal = cleanup;
 })();
