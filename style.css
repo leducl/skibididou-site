@@ -64,6 +64,37 @@ h1 {
   pointer-events: none;
 }
 
+#pauseButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  display: none;
+}
+
+#pauseButton:hover {
+  background-color: #d35400;
+}
+
+#darkModeButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+#darkModeButton:hover {
+  background-color: #5a6268;
+}
+
 
 #grid {
   display: grid;
@@ -77,7 +108,7 @@ h1 {
 .square {
   position: relative;
   overflow: hidden;
-  background-color: #e0e0e0;
+  background-color: #f9f9b6;
   border: 1px solid #ccc;
   box-sizing: border-box;
   aspect-ratio: 1 / 1;
@@ -134,6 +165,25 @@ h1 {
   max-width: 400px;
   margin-inline: auto;
   overflow-y: scroll; /* au lieu de auto */
+}
+
+body.dark-mode {
+  background: linear-gradient(135deg, #1e1e1e 0%, #3a3a3a 100%);
+  color: #f8f9fa;
+}
+
+body.dark-mode #mainCard {
+  background-color: #2c2c2c;
+  color: #f8f9fa;
+}
+
+body.dark-mode #gridContainer {
+  background-color: #222;
+  border-color: #444;
+}
+
+body.dark-mode .square {
+  border-color: #555;
 }
 
 #eventInfo {
