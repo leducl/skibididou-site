@@ -28,6 +28,8 @@ const eventScripts = [
   "events/event17.js",
   "events/event18.js",
   "events/event19.js",
+  "events/event20.js",
+  "events/event21.js",
   "events/bootstrapTheme.js",
   "events/duckhunt.js",
   "events/starRain.js",
