@@ -5,6 +5,9 @@ const darkModeButton = document.getElementById("darkModeButton");
 const timerDisplay = document.getElementById("timer");
 const durationInput = document.getElementById("durationInput");
 const intervalInput = document.getElementById("intervalInput");
+const progressBar = document.getElementById("timeProgress");
+const progressArc = document.getElementById("progressArc");
+const CIRCUMFERENCE = 339;
 let loadedEventScripts = [];
 let recentEvents = [];
 
@@ -98,6 +101,17 @@ function updateTimerDisplay() {
   const minutes = Math.floor((remaining % 3600) / 60).toString().padStart(2, '0');
   const seconds = (remaining % 60).toString().padStart(2, '0');
   timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+
+  if (progressBar && totalSeconds) {
+    const ratio = elapsedSeconds / totalSeconds;
+    progressBar.style.width = `${Math.min(ratio * 100, 100)}%`;
+  }
+
+  if (progressArc && totalSeconds) {
+    const ratio = elapsedSeconds / totalSeconds;
+    const offset = CIRCUMFERENCE - ratio * CIRCUMFERENCE;
+    progressArc.style.strokeDashoffset = offset;
+  }
 }
 
 function generateSquares() {
@@ -154,6 +168,8 @@ function startTimer() {
   isPaused = false;
 
   generateSquares();
+  if (progressBar) progressBar.style.width = '0%';
+  if (progressArc) progressArc.style.strokeDashoffset = CIRCUMFERENCE;
   // Met à jour dynamiquement la durée d'animation en CSS
   const style = document.createElement('style');
   style.innerHTML = `

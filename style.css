@@ -186,3 +186,53 @@ body.dark-mode .square {
   border-color: #555;
 }
 
+/* Zone de progression lin\E9aire */
+#progressZone .progress {
+  height: 20px;
+  background-color: #e9ecef;
+}
+
+#timeProgress {
+  background-color: #27ae60;
+  transition: width 0.5s linear;
+}
+
+/* Zone de progression circulaire */
+#circleZone {
+  max-width: 200px;
+  margin-inline: auto;
+}
+
+#progressCircle {
+  width: 100%;
+  transform: rotate(-90deg);
+}
+
+#progressCircle circle {
+  fill: none;
+  stroke-width: 10;
+}
+
+#progressCircle .bg {
+  stroke: #e0e0e0;
+}
+
+#progressArc {
+  stroke: #3498db;
+  stroke-dasharray: 339;
+  stroke-dashoffset: 339;
+  transition: stroke-dashoffset 0.5s linear;
+}
+
+body.dark-mode #timeProgress {
+  background-color: #2ecc71;
+}
+
+body.dark-mode #progressCircle .bg {
+  stroke: #444;
+}
+
+body.dark-mode #progressArc {
+  stroke: #9bd3ff;
+}
+
