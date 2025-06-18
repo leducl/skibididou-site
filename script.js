@@ -77,13 +77,7 @@ function triggerRandomEvent() {
   const eventFile = available[Math.floor(Math.random() * available.length)];
   recentEvents.push(eventFile);
   if (recentEvents.length > 5) recentEvents.shift();
-  const eventInfo = document.getElementById("eventInfo");
-  if(eventInfo) {
-    const eventName = eventFile.split("/").pop().replace(/\.js$/, "");
-    eventInfo.textContent = `Événement : ${eventName}`;
-    eventInfo.classList.add("show");
-    setTimeout(() => eventInfo.classList.remove("show"), 4000);
-  }
+  // Affichage du nom de l'événement supprimé
 
   const script = document.createElement("script");
   // Ajoute un timestamp pour forcer le reload
