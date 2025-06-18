@@ -21,7 +21,9 @@
       50% { opacity: 1; }
     }
     .flash-anim {
+
       animation: flash 0.5s linear infinite;
+
     }
   `;
   document.head.appendChild(style);
@@ -29,7 +31,14 @@
   overlay.classList.add('flash-anim');
 
 
+
   function cleanup() {
+
+
+
+
+
+
     overlay.remove();
     style.remove();
     delete window.closeCustomEventModal;
