@@ -16,7 +16,14 @@ const eventScripts = [
   "events/event8.js",
   "events/event9.js",
   "events/bootstrapTheme.js",
-  "events/duckhunt.js"
+  "events/duckhunt.js",
+  "events/starRain.js",
+  "events/matrixMode.js",
+  "events/bubblePop.js",
+  "events/pixelScreen.js",
+  "events/puzzleGame.js",
+  "events/flashEffect.js",
+  "events/heartFountain.js"
 
 ];
 
