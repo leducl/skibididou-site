@@ -9,6 +9,7 @@ const progressBar = document.getElementById("timeProgress");
 const progressArc = document.getElementById("progressArc");
 const CIRCUMFERENCE = 339;
 const CIRCLE_LOOP_SECONDS = 5; // durée de boucle rapide pour un effet satisfaisant
+
 let loadedEventScripts = [];
 let recentEvents = [];
 
@@ -108,7 +109,6 @@ function updateTimerDisplay() {
     progressBar.style.width = `${Math.min(ratio * 100, 100)}%`;
   }
 
-  // La progression circulaire est anim\xE9e via CSS pour se r\xE9initialiser r\xE9guli\xE8rement
 }
 
 function generateSquares() {
@@ -172,6 +172,7 @@ function startTimer() {
     progressArc.style.animationPlayState = 'running';
     progressArc.style.strokeDashoffset = CIRCUMFERENCE;
   }
+
   // Met à jour dynamiquement la durée d'animation en CSS
   const style = document.createElement('style');
   style.innerHTML = `
