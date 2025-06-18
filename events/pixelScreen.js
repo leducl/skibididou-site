@@ -21,13 +21,19 @@
   }
 
   const cells = Array.from(container.children);
-  let flashes = 0;
+
+  
+
+
+
   const interval = setInterval(() => {
     cells.forEach(c => {
       c.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
     });
-    flashes++;
-    if (flashes > 10) cleanup();
+
+
+
+
   }, 200);
 
   function cleanup() {

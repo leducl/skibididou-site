@@ -21,16 +21,24 @@
       50% { opacity: 1; }
     }
     .flash-anim {
-      animation: flash 0.5s linear 3;
+
+      animation: flash 0.5s linear infinite;
+
     }
   `;
   document.head.appendChild(style);
 
   overlay.classList.add('flash-anim');
-  overlay.addEventListener('animationend', cleanup);
+
+
 
   function cleanup() {
-    overlay.removeEventListener('animationend', cleanup);
+
+
+
+
+
+
     overlay.remove();
     style.remove();
     delete window.closeCustomEventModal;

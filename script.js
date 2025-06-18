@@ -4,6 +4,7 @@ const timerDisplay = document.getElementById("timer");
 const durationInput = document.getElementById("durationInput");
 const intervalInput = document.getElementById("intervalInput");
 let loadedEventScripts = [];
+let recentEvents = [];
 
 const eventScripts = [
   "events/event1.js",
@@ -54,7 +55,14 @@ function clearEventsState() {
 function triggerRandomEvent() {
   clearEventsState();
 
-  const eventFile = eventScripts[Math.floor(Math.random() * eventScripts.length)];
+  let available = eventScripts.filter(f => !recentEvents.includes(f));
+  if (available.length === 0) {
+    available = eventScripts;
+    recentEvents = [];
+  }
+  const eventFile = available[Math.floor(Math.random() * available.length)];
+  recentEvents.push(eventFile);
+  if (recentEvents.length > 5) recentEvents.shift();
   const eventInfo = document.getElementById("eventInfo");
   if(eventInfo) {
     const eventName = eventFile.split("/").pop().replace(/\.js$/, "");
