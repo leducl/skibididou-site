@@ -1,5 +1,7 @@
 const grid = document.getElementById("grid");
 const startButton = document.getElementById("startButton");
+const pauseButton = document.getElementById("pauseButton");
+const darkModeButton = document.getElementById("darkModeButton");
 const timerDisplay = document.getElementById("timer");
 const durationInput = document.getElementById("durationInput");
 const intervalInput = document.getElementById("intervalInput");
@@ -41,6 +43,8 @@ const eventScripts = [
 let totalSeconds, intervalSeconds, numSquares;
 let elapsedSeconds = 0;
 let secondInterval;
+let isPaused = false;
+let darkMode = false;
 function clearEventsState() {
   if (typeof window.closeCustomEventModal === 'function') {
     try { window.closeCustomEventModal(); } catch (e) { console.error(e); }
@@ -111,6 +115,36 @@ function generateSquares() {
   if (sc) sc.textContent = `Carrés générés : ${numSquares}`;
 }
 
+function tick() {
+  if (elapsedSeconds % intervalSeconds === 0) {
+    const index = Math.floor(elapsedSeconds / intervalSeconds);
+    const squares = document.querySelectorAll(".square");
+    if (index < squares.length) {
+      squares[index].classList.add("filling");
+      squares[index].scrollIntoView({ behavior: "smooth", block: "center" });
+
+      setTimeout(() => {
+        squares[index].classList.remove("filling");
+        squares[index].classList.add("filled");
+
+        if (typeof window.closeCustomEventModal === "function") {
+          window.closeCustomEventModal();
+        }
+
+        triggerRandomEvent();
+      }, intervalSeconds * 1000);
+    }
+  }
+
+  updateTimerDisplay();
+  elapsedSeconds++;
+
+  if (elapsedSeconds >= totalSeconds) {
+    clearInterval(secondInterval);
+    pauseButton.style.display = 'none';
+  }
+}
+
 function startTimer() {
   const durationMinutes = parseInt(durationInput.value);
   intervalSeconds = parseInt(intervalInput.value);
@@ -118,8 +152,10 @@ function startTimer() {
   numSquares = Math.ceil(totalSeconds / intervalSeconds);
 
   startButton.style.display = "none";
+  pauseButton.style.display = "inline-block";
   durationInput.disabled = true;
   intervalInput.disabled = true;
+  isPaused = false;
 
   generateSquares();
   // Met à jour dynamiquement la durée d'animation en CSS
@@ -133,37 +169,46 @@ function startTimer() {
 
   updateTimerDisplay();
 
-  secondInterval = setInterval(() => {
-    if (elapsedSeconds % intervalSeconds === 0) {
-      const index = Math.floor(elapsedSeconds / intervalSeconds);
-      const squares = document.querySelectorAll(".square");
-      if (index < squares.length) {
-        squares[index].classList.add("filling");
-        // Scroll vers le carré en cours
-        squares[index].scrollIntoView({ behavior: "smooth", block: "center" });
-
-
-        setTimeout(() => {
-          squares[index].classList.remove("filling");
-          squares[index].classList.add("filled");
-        
-          if (typeof window.closeCustomEventModal === "function") {
-            window.closeCustomEventModal(); // Ferme le modal si un event l’a créé
-          }
-        
-          triggerRandomEvent();
-        }, intervalSeconds * 1000);
-        
-      }
-    }
-
-    updateTimerDisplay();
-    elapsedSeconds++;
-
-    if (elapsedSeconds >= totalSeconds) {
-      clearInterval(secondInterval);
-    }
-  }, 1000);
+  secondInterval = setInterval(tick, 1000);
 }
 
 startButton.addEventListener("click", startTimer);
+
+function pauseTimer() {
+  clearInterval(secondInterval);
+  document.querySelectorAll('.square.filling').forEach(sq => {
+    sq.style.animationPlayState = 'paused';
+  });
+}
+
+function resumeTimer() {
+  document.querySelectorAll('.square.filling').forEach(sq => {
+    sq.style.animationPlayState = 'running';
+  });
+  secondInterval = setInterval(tick, 1000);
+}
+
+pauseButton.addEventListener('click', () => {
+  if (!isPaused) {
+    pauseTimer();
+    pauseButton.textContent = 'Reprendre';
+    isPaused = true;
+  } else {
+    resumeTimer();
+    pauseButton.textContent = 'Pause';
+    isPaused = false;
+  }
+});
+
+function toggleDarkMode() {
+  darkMode = !darkMode;
+  if (darkMode) {
+    document.body.classList.add('dark-mode');
+    darkModeButton.textContent = 'Mode Clair';
+  } else {
+    document.body.classList.remove('dark-mode');
+    darkModeButton.textContent = 'Mode Sombre';
+  }
+}
+
+darkModeButton.addEventListener('click', toggleDarkMode);
