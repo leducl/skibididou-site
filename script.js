@@ -8,6 +8,7 @@ const intervalInput = document.getElementById("intervalInput");
 const progressBar = document.getElementById("timeProgress");
 const progressArc = document.getElementById("progressArc");
 const CIRCUMFERENCE = 339;
+const CIRCLE_LOOP_SECONDS = 5; // durée de boucle rapide pour un effet satisfaisant
 let loadedEventScripts = [];
 let recentEvents = [];
 
@@ -107,11 +108,7 @@ function updateTimerDisplay() {
     progressBar.style.width = `${Math.min(ratio * 100, 100)}%`;
   }
 
-  if (progressArc && totalSeconds) {
-    const ratio = elapsedSeconds / totalSeconds;
-    const offset = CIRCUMFERENCE - ratio * CIRCUMFERENCE;
-    progressArc.style.strokeDashoffset = offset;
-  }
+  // La progression circulaire est anim\xE9e via CSS pour se r\xE9initialiser r\xE9guli\xE8rement
 }
 
 function generateSquares() {
@@ -169,7 +166,12 @@ function startTimer() {
 
   generateSquares();
   if (progressBar) progressBar.style.width = '0%';
-  if (progressArc) progressArc.style.strokeDashoffset = CIRCUMFERENCE;
+  if (progressArc) {
+    progressArc.classList.add('looping');
+    progressArc.style.animationDuration = `${CIRCLE_LOOP_SECONDS}s`;
+    progressArc.style.animationPlayState = 'running';
+    progressArc.style.strokeDashoffset = CIRCUMFERENCE;
+  }
   // Met à jour dynamiquement la durée d'animation en CSS
   const style = document.createElement('style');
   style.innerHTML = `
@@ -191,12 +193,18 @@ function pauseTimer() {
   document.querySelectorAll('.square.filling').forEach(sq => {
     sq.style.animationPlayState = 'paused';
   });
+  if (progressArc) {
+    progressArc.style.animationPlayState = 'paused';
+  }
 }
 
 function resumeTimer() {
   document.querySelectorAll('.square.filling').forEach(sq => {
     sq.style.animationPlayState = 'running';
   });
+  if (progressArc) {
+    progressArc.style.animationPlayState = 'running';
+  }
   secondInterval = setInterval(tick, 1000);
 }
 
