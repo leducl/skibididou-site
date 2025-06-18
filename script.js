@@ -5,6 +5,11 @@ const darkModeButton = document.getElementById("darkModeButton");
 const timerDisplay = document.getElementById("timer");
 const durationInput = document.getElementById("durationInput");
 const intervalInput = document.getElementById("intervalInput");
+const progressBar = document.getElementById("timeProgress");
+const progressArc = document.getElementById("progressArc");
+const CIRCUMFERENCE = 339;
+const CIRCLE_LOOP_SECONDS = 5; // durée de boucle rapide pour un effet satisfaisant
+
 let loadedEventScripts = [];
 let recentEvents = [];
 
@@ -98,6 +103,12 @@ function updateTimerDisplay() {
   const minutes = Math.floor((remaining % 3600) / 60).toString().padStart(2, '0');
   const seconds = (remaining % 60).toString().padStart(2, '0');
   timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+
+  if (progressBar && totalSeconds) {
+    const ratio = elapsedSeconds / totalSeconds;
+    progressBar.style.width = `${Math.min(ratio * 100, 100)}%`;
+  }
+
 }
 
 function generateSquares() {
@@ -154,6 +165,14 @@ function startTimer() {
   isPaused = false;
 
   generateSquares();
+  if (progressBar) progressBar.style.width = '0%';
+  if (progressArc) {
+    progressArc.classList.add('looping');
+    progressArc.style.animationDuration = `${CIRCLE_LOOP_SECONDS}s`;
+    progressArc.style.animationPlayState = 'running';
+    progressArc.style.strokeDashoffset = CIRCUMFERENCE;
+  }
+
   // Met à jour dynamiquement la durée d'animation en CSS
   const style = document.createElement('style');
   style.innerHTML = `
@@ -175,12 +194,18 @@ function pauseTimer() {
   document.querySelectorAll('.square.filling').forEach(sq => {
     sq.style.animationPlayState = 'paused';
   });
+  if (progressArc) {
+    progressArc.style.animationPlayState = 'paused';
+  }
 }
 
 function resumeTimer() {
   document.querySelectorAll('.square.filling').forEach(sq => {
     sq.style.animationPlayState = 'running';
   });
+  if (progressArc) {
+    progressArc.style.animationPlayState = 'running';
+  }
   secondInterval = setInterval(tick, 1000);
 }
 

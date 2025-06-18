@@ -37,6 +37,19 @@
         <div id="grid"></div>
       </div>
 
+      <div id="progressZone" class="mt-4">
+        <div class="progress w-100">
+          <div id="timeProgress" class="progress-bar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div id="circleZone" class="mt-4">
+        <svg id="progressCircle" viewBox="0 0 120 120">
+          <circle class="bg" cx="60" cy="60" r="54" />
+          <circle id="progressArc" cx="60" cy="60" r="54" />
+        </svg>
+      </div>
+
     </div>
 
     <script src="script.js"></script>
